@@ -18,10 +18,21 @@
 ###
 
 class CreateProjectController
-    @.$inject = []
+    @.$inject = [
+        "tgAppMetaService",
+        "$translate",
+        "tgProjectService"
+    ]
 
-    constructor: () ->
-        @.inDefaultStep = true
+    constructor: (@appMetaService, @translate, @projectService) ->
+        taiga.defineImmutableProperty @, "project", () => return @projectService.project
+
+        @appMetaService.setfn @._setMeta.bind(this)
+
+        @.displayScrumDesc = false
+        @.displayKanbanDesc = false
+
+        console.log @.displayScrumDesc, @.displayKanbanDesc
 
     getStep: (step) ->
         if step == 'home'
@@ -31,5 +42,14 @@ class CreateProjectController
             @.inDefaultStep = false
             @.inStepDuplicateProject = true
 
+    _setMeta: ()->
+        return null if !@.project
+
+        ctx = {projectName: @.project.get("name")}
+
+        return {
+            title: @translate.instant("PROJECT.PAGE_TITLE", ctx)
+            description: @.project.get("description")
+        }
 
 angular.module("taigaProjects").controller("CreateProjectCtrl", CreateProjectController)
