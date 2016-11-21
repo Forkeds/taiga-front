@@ -14,24 +14,24 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 #
-# File: invite-members.directive.coffee
+# File: import-project.directive.coffee
 ###
 
-InviteMembersDirective = () ->
+ImportProjectDirective = () ->
+
     link = (scope, el, attr, ctrl) ->
 
     return {
         link: link,
-        templateUrl:"projects/create/invite-members/invite-members.html",
-        controller: "InviteMembersCtrl",
+        templateUrl:"projects/create/import/import-project.html",
+        controller: "ImportProjectCtrl",
         controllerAs: "vm",
         bindToController: true,
         scope: {
-            members: '>',
-            onSetInvitedMembers: '&'
+            onCancelProjectDuplication: '&'
         }
     }
 
-InviteMembersDirective.$inject = []
+ImportProjectDirective.$inject = []
 
-angular.module("taigaProjects").directive("tgInviteMembers", InviteMembersDirective)
+angular.module("taigaProjects").directive("tgImportProject", ImportProjectDirective)

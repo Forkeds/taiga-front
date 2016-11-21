@@ -14,24 +14,26 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 #
-# File: invite-members.directive.coffee
+# File: trello-import-project-members.controller.coffee
 ###
 
-InviteMembersDirective = () ->
-    link = (scope, el, attr, ctrl) ->
+class SelectImportUserLightboxCtrl
+    @.$inject = [
+        'tgUserService',
+        'tgCurrentUserService'
+    ]
 
-    return {
-        link: link,
-        templateUrl:"projects/create/invite-members/invite-members.html",
-        controller: "InviteMembersCtrl",
-        controllerAs: "vm",
-        bindToController: true,
-        scope: {
-            members: '>',
-            onSetInvitedMembers: '&'
-        }
-    }
+    constructor: (@userService, @currentUserService) ->
+        @.user = @currentUserService.getUser()
+        @.mode = 'search'
+        @.invalid = false
 
-InviteMembersDirective.$inject = []
+        @userService.getContacts(@.user.get('id')).then(@.setContacts.bind(this))
 
-angular.module("taigaProjects").directive("tgInviteMembers", InviteMembersDirective)
+    setContacts: (contacts) ->
+        @.users = contacts
+
+    searchUser: () ->
+        @.invalid = true
+
+angular.module('taigaProjects').controller('SelectImportUserLightboxCtrl', SelectImportUserLightboxCtrl)

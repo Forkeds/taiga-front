@@ -21,18 +21,23 @@ class CreateProjectController
     @.$inject = [
         "tgAppMetaService",
         "$translate",
-        "tgProjectService"
+        "tgProjectService",
+        '$location'
     ]
 
-    constructor: (@appMetaService, @translate, @projectService) ->
+    constructor: (@appMetaService, @translate, @projectService, @location) ->
         taiga.defineImmutableProperty @, "project", () => return @projectService.project
 
         @appMetaService.setfn @._setMeta.bind(this)
 
         @.displayScrumDesc = false
         @.displayKanbanDesc = false
+        @.inDefaultStep = true
 
         console.log @.displayScrumDesc, @.displayKanbanDesc
+
+        if @location.search().from == "trello"
+            @.getStep("import")
 
     getStep: (step) ->
         if step == 'home'
@@ -41,6 +46,10 @@ class CreateProjectController
         else if step == 'duplicate'
             @.inDefaultStep = false
             @.inStepDuplicateProject = true
+        else if step == 'import'
+            @.inDefaultStep = false
+            @.inStepDuplicateProject = false
+            @.inStepImportProject = true
 
     _setMeta: ()->
         return null if !@.project

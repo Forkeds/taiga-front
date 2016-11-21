@@ -14,24 +14,21 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 #
-# File: invite-members.directive.coffee
+# File: trello-import-project-form.directive.coffee
 ###
 
-InviteMembersDirective = () ->
-    link = (scope, el, attr, ctrl) ->
-
+TrelloImportProjectFormDirective = () ->
     return {
-        link: link,
-        templateUrl:"projects/create/invite-members/invite-members.html",
-        controller: "InviteMembersCtrl",
+        templateUrl:"projects/create/trello-import/trello-import-project-form/trello-import-project-form.html",
+        controller: "TrelloImportProjectFormCtrl",
         controllerAs: "vm",
         bindToController: true,
         scope: {
-            members: '>',
-            onSetInvitedMembers: '&'
+            project: '<',
+            onSaveProjectDetails: '&'
         }
     }
 
-InviteMembersDirective.$inject = []
+TrelloImportProjectFormDirective.$inject = []
 
-angular.module("taigaProjects").directive("tgInviteMembers", InviteMembersDirective)
+angular.module("taigaProjects").directive("tgTrelloImportProjectForm", TrelloImportProjectFormDirective)
